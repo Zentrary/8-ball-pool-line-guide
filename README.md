@@ -1,6 +1,6 @@
 # 🎱 8 Ball Pool Guideline Overlay
 
-![Preview](Images/Image.png)
+![Preview](Images/Images.png)
 
 โปรแกรม **Guideline Overlay สำหรับเกม 8 Ball Pool**  
 ช่วยแสดงเส้นแนวการยิงจากตำแหน่งลูกบอลไปยังหลุมต่าง ๆ เพื่อช่วยวิเคราะห์มุมการยิง
@@ -325,5 +325,6 @@ Use responsibly.
 ---
 
 # 👨‍💻 Developer
+
 
 Developed with Python & PyQt5
