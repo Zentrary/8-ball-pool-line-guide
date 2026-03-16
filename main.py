@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject, QRect
 from PyQt5.QtGui import QPainter, QPen, QColor, QFont
 
-CONFIG_FILE = "pool_config.json"
+CONFIG_FILE = "config.json"
 class HotkeySignaler(QObject):
     toggle_signal = pyqtSignal()
     exit_signal = pyqtSignal()
@@ -23,12 +23,14 @@ class PoolGuidelineGlobal(QWidget):
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.default_geometry = (100, 100, 1000, 500)
         self.ball_pos = QPoint(200, 200)
+        self.reflect_pos = QPoint(500, 100)
         self.ball_radius = 12 
         self.is_locked = False
         self.table_padding = 25 
         self.current_lang = 'th'
         self.load_settings()
         self.dragging_ball = False
+        self.dragging_reflect = False
         self.dragging_window = False
         self.resizing = False
         self.offset = QPoint()
@@ -56,6 +58,7 @@ class PoolGuidelineGlobal(QWidget):
                     data = json.load(f)
                     self.setGeometry(data['x'], data['y'], data['w'], data['h'])
                     self.ball_pos = QPoint(data['ball_x'], data['ball_y'])
+                    self.reflect_pos = QPoint(data.get('reflect_x', 500), data.get('reflect_y', 100))
                     self.current_lang = data.get('lang', 'th') 
             except:
                 self.setGeometry(*self.default_geometry)
@@ -68,6 +71,8 @@ class PoolGuidelineGlobal(QWidget):
             'w': self.width(), 'h': self.height(),
             'ball_x': self.ball_pos.x(),
             'ball_y': self.ball_pos.y(),
+            'reflect_x': self.reflect_pos.x(),
+            'reflect_y': self.reflect_pos.y(),
             'lang': self.current_lang
         }
         with open(CONFIG_FILE, 'w') as f:
@@ -103,7 +108,7 @@ class PoolGuidelineGlobal(QWidget):
         painter.setBrush(QColor(20, 20, 20, bg_opacity))
         painter.setPen(Qt.NoPen)
         painter.drawRoundedRect(0, 0, w, h, 10, 10)
-        painter.setPen(QPen(QColor(0, 170, 255, 180 if not self.is_locked else 50), 2, Qt.DashLine))
+        painter.setPen(QPen(QColor(0, 170, 255, 180 if not self.is_locked else 50), 1, Qt.SolidLine))
         painter.drawRect(playable_rect)
         corner_offset = self.ball_radius + 2 
         side_offset_y = self.ball_radius - 2 
@@ -130,12 +135,71 @@ class PoolGuidelineGlobal(QWidget):
             painter.drawEllipse(p, 6, 6)
             dx, dy = p.x() - self.ball_pos.x(), p.y() - self.ball_pos.y()
             angle = math.atan2(dy, dx)
-            painter.setPen(QPen(QColor(0, 255, 127, line_alpha), 1.2, Qt.DashLine))
+            painter.setPen(QPen(QColor(0, 255, 127, line_alpha), 1.0, Qt.SolidLine))
             painter.drawLine(self.ball_pos, p)
             offset_x, offset_y = math.sin(angle) * self.ball_radius, math.cos(angle) * self.ball_radius
             painter.setPen(QPen(QColor(255, 255, 255, line_alpha - 50), 1))
             painter.drawLine(int(self.ball_pos.x() + offset_x), int(self.ball_pos.y() - offset_y), int(p.x() + offset_x), int(p.y() - offset_y))
             painter.drawLine(int(self.ball_pos.x() - offset_x), int(self.ball_pos.y() + offset_y), int(p.x() - offset_x), int(p.y() + offset_y))
+
+        reflect_x = max(left, min(self.reflect_pos.x(), right))
+        reflect_y = max(top, min(self.reflect_pos.y(), bottom))
+        dists = {
+            'left': abs(reflect_x - left),
+            'right': abs(reflect_x - right),
+            'top': abs(reflect_y - top),
+            'bottom': abs(reflect_y - bottom)
+        }
+        edge = min(dists, key=dists.get)
+        if edge == 'left':
+            reflect_x = left
+        elif edge == 'right':
+            reflect_x = right
+        elif edge == 'top':
+            reflect_y = top
+        else:
+            reflect_y = bottom
+        self.reflect_pos = QPoint(reflect_x, reflect_y)
+
+        painter.setPen(QPen(QColor(255, 170, 0, 220), 1.0, Qt.SolidLine))
+        painter.drawLine(self.ball_pos, self.reflect_pos)
+
+        vx = reflect_x - self.ball_pos.x()
+        vy = reflect_y - self.ball_pos.y()
+        if vx != 0 or vy != 0:
+            if edge == 'left': nx, ny = -1, 0
+            elif edge == 'right': nx, ny = 1, 0
+            elif edge == 'top': nx, ny = 0, -1
+            else: nx, ny = 0, 1
+            dot = vx * nx + vy * ny
+            rvx = vx - 2 * dot * nx
+            rvy = vy - 2 * dot * ny
+            mag = math.hypot(rvx, rvy)
+            if mag > 0:
+                t_values = []
+                if rvx != 0:
+                    t_left = (left - reflect_x) / rvx
+                    t_right = (right - reflect_x) / rvx
+                    if t_left > 0: t_values.append(t_left)
+                    if t_right > 0: t_values.append(t_right)
+                if rvy != 0:
+                    t_top = (top - reflect_y) / rvy
+                    t_bottom = (bottom - reflect_y) / rvy
+                    if t_top > 0: t_values.append(t_top)
+                    if t_bottom > 0: t_values.append(t_bottom)
+                if t_values:
+                    t = min(t_values)
+                    rx2 = int(reflect_x + rvx * t)
+                    ry2 = int(reflect_y + rvy * t)
+                else:
+                    rx2 = int(reflect_x + rvx / mag * 900)
+                    ry2 = int(reflect_y + rvy / mag * 900)
+                painter.setPen(QPen(QColor(0, 255, 255, 220), 2, Qt.SolidLine))
+                painter.drawLine(QPoint(reflect_x, reflect_y), QPoint(rx2, ry2))
+
+        painter.setBrush(QColor(50, 200, 255, 120))
+        painter.setPen(QPen(QColor(255, 255, 255, 200), 0.8))
+        painter.drawEllipse(self.reflect_pos, 7, 7)
 
         painter.setFont(QFont("Tahoma", 10, QFont.Bold))
         app_name = "8 Ball Pool Guideline"
@@ -160,6 +224,8 @@ class PoolGuidelineGlobal(QWidget):
         if event.button() == Qt.LeftButton:
             if (event.pos() - self.ball_pos).manhattanLength() < 25:
                 self.dragging_ball = True
+            elif (event.pos() - self.reflect_pos).manhattanLength() < 14:
+                self.dragging_reflect = True
             elif event.x() > self.width() - 30 and event.y() > self.height() - 30:
                 self.resizing = True
             elif event.y() < 40:
@@ -178,14 +244,36 @@ class PoolGuidelineGlobal(QWidget):
             new_y = max(min_y, min(event.y(), max_y))
             self.ball_pos = QPoint(new_x, new_y)
             self.update()
-            
+        elif self.dragging_reflect:
+            w, h = self.width(), self.height()
+            min_x = self.table_padding
+            max_x = w - self.table_padding
+            min_y = self.table_padding + 25
+            max_y = h - self.table_padding
+            new_x = max(min_x, min(event.x(), max_x))
+            new_y = max(min_y, min(event.y(), max_y))
+            dist_left = abs(new_x - min_x)
+            dist_right = abs(new_x - max_x)
+            dist_top = abs(new_y - min_y)
+            dist_bottom = abs(new_y - max_y)
+            edge = min(dist_left, dist_right, dist_top, dist_bottom)
+            if edge == dist_left:
+                new_x = min_x
+            elif edge == dist_right:
+                new_x = max_x
+            elif edge == dist_top:
+                new_y = min_y
+            else:
+                new_y = max_y
+            self.reflect_pos = QPoint(new_x, new_y)
+            self.update()
         elif self.resizing:
             self.resize(max(400, event.x()), max(300, event.y()))
         elif self.dragging_window:
             self.move(event.globalPos() - self.offset)
 
     def mouseReleaseEvent(self, event):
-        self.dragging_ball = self.dragging_window = self.resizing = False
+        self.dragging_ball = self.dragging_reflect = self.dragging_window = self.resizing = False
         self.save_settings()
 
 if __name__ == '__main__':
