@@ -1,205 +1,66 @@
-# 🎱 8 Ball Pool Guideline Overlay
+# 🎱 8 Ball Pool Guideline Overlay v2
 
 ![Preview](Images/Images.png)
 
-โปรแกรม **Guideline Overlay สำหรับเกม 8 Ball Pool**  
-ช่วยแสดงเส้นแนวการยิงจากตำแหน่งลูกบอลไปยังหลุมต่าง ๆ เพื่อช่วยวิเคราะห์มุมการยิง
+โปรแกรม **Guideline Overlay สำหรับเกม 8 Ball Pool** ช่วยแสดงเส้นแนวการยิงจากตำแหน่งลูกขาวไปยังหลุมต่าง ๆ พร้อมระบบคำนวณเส้นสะท้อน (Reflection) เพื่อช่วยวิเคราะห์มุมการยิงขั้นสูง
 
-This is a **Pool Guideline Overlay Tool** that helps visualize shot directions from the cue ball to all pockets.
-
----
-
-## 🔄 อัพเดตล่าสุด
-- เปลี่ยนเส้น Guideline เป็นเส้นทึบ (ไม่ใช่เส้นปะ)
-- ปรับความหนาเส้นให้บางลง เพื่อความคมชัดและไม่บดบัง
-- วงจุดสะท้อน (reflect target) ปรับให้โปร่งใสและขอบบางขึ้น
+This is an advanced **Pool Guideline Overlay Tool** that helps visualize shot directions and bank shots (reflections) from the cue ball to all pockets.
 
 ---
 
-# 🇹🇭 ภาษาไทย
+## 🔄 อัพเดตล่าสุด (Latest Updates)
+- **[NEW] ImGui-Style Settings UI:** กด `F2` เพื่อเปิดหน้าต่างตั้งค่าแบบ Real-time
+- **[NEW] Reflection System:** เพิ่มจุดคำนวณเส้นสะท้อนชิ่งขอบโต๊ะ
+- **[NEW] Customization:** ปรับแต่งแต่งขนาดลูก, ขนาดเส้น, ความโปร่งใส และสีสันได้ทุกจุด
+- **[NEW] Custom Hotkeys:** ระบบเปลี่ยนคีย์ลัดได้ตามใจชอบ
+- **[NEW] Reset to Defaults:** ปุ่มคืนค่าเริ่มต้นหากตั้งค่าผิดพลาด
+
+---
+
+# 🇹🇭 ภาษาไทย (Thai)
 
 ## 📌 เกี่ยวกับโปรแกรม
 
-โปรแกรมนี้เป็น **Overlay Tool** ที่จะแสดงเส้นแนวการยิงบนหน้าจอ  
-เพื่อช่วยให้ผู้เล่นวิเคราะห์มุมในการยิงลูกพูลไปยังหลุมต่าง ๆ
-
-ตัวโปรแกรมจะทำงานเป็น **หน้าต่างโปร่งใส (Transparent Overlay)**  
-และสามารถวางทับบนเกมได้
-
-ผู้ใช้สามารถลากตำแหน่งลูกบอล และโปรแกรมจะคำนวณเส้นไปยังหลุมทั้งหมดให้ทันที
+โปรแกรมนี้เป็น **Overlay Tool** ที่จะแสดงเส้นแนวการยิงบนหน้าจอ เพื่อช่วยให้ผู้เล่นวิเคราะห์มุมในการยิงลูกพูลไปยังหลุมต่าง ๆ 
+ตัวโปรแกรมจะทำงานเป็น **หน้าต่างโปร่งใส (Transparent Overlay)** และสามารถวางทับบนหน้าต่างเกมเพลย์ได้โดยตรง 
+ผู้ใช้สามารถลากตำแหน่งลูกขาว (Cue Ball) และจุดสะท้อน (Reflection Target) โปรแกรมจะทำการคำนวณเส้นฟิสิกส์ให้แบบ Real-time
 
 ---
 
-# ✨ ฟีเจอร์หลัก
+## ✨ ฟีเจอร์หลัก
 
 ### 🎱 Pool Table Overlay
-แสดงกรอบโต๊ะพูลบนหน้าจอ
+แสดงกรอบโต๊ะพูลบนหน้าจอ พร้อมเส้นขอบที่ปรับแต่งสีและความโปร่งใสได้
 
-### 🎯 Automatic Guideline
-วาดเส้นจากตำแหน่งลูกบอลไปยัง
+### 🎯 Auto Guideline & Reflection
+- **Direct Shot:** วาดเส้นแนวเล็งจากลูกขาวไปยังหลุมทั้ง 6 หลุม (มุม 4, กลาง 2)
+- **Bank Shot:** ระบบคำนวณเส้นสะท้อนขอบโต๊ะ (Reflection Vector) สำหรับการแทงชิ่ง
 
-- หลุมมุม 4 หลุม
-- หลุมด้านข้าง 2 หลุม
+### ⚙️ Real-time Settings (F2)
+หน้าต่างตั้งค่าแบบใหม่ที่ให้คุณปรับแต่ง:
+- **ขนาดและสี:** รัศมีลูกขาว, ความหนาเส้นเล็ง, สีของจุดต่างๆ
+- **ความโปร่งใส:** ปรับ Opacity ของพื้นหลังเพื่อไม่ให้บังเกม
+- **คีย์ลัด (Hotkeys):** ตั้งค่าปุ่มกดใหม่ได้จากในโปรแกรม
 
-รวมทั้งหมด **6 หลุม**
+### 🖱️ Edit Mode & 🔒 Lock Mode
+- **โหมดแก้ไข:** สามารถใช้เมาส์ลากย้ายตำแหน่งลูกขาว, ย้ายจุดสะท้อน, และย่อขยายหน้าต่างได้
+- **โหมดล็อค:** โปรแกรมจะ **ทะลุการคลิกเมาส์ (Click-through)** ทำให้คุณสามารถเล่นเกมที่อยู่ด้านหลังได้ตามปกติ โดยที่เส้นช่วยเล็งยังคงแสดงอยู่
 
----
-
-### ⚙️ Edit Mode
-
-โหมดแก้ไขให้ผู้ใช้สามารถ
-
-- ลากลูกบอล
-- ปรับขนาดหน้าต่าง
-- ย้ายตำแหน่ง Overlay
-
----
-
-### 🔒 Lock Mode
-
-เมื่อ Lock แล้ว
-
-- โปรแกรมจะ **ไม่รับ input จาก mouse**
-- สามารถคลิกเกมด้านล่างได้
-- Overlay จะยังคงแสดงเส้นช่วยเล็ง
+### 💾 Auto-Save Config
+โปรแกรมจะบันทึกการตั้งค่าทั้งหมดอัตโนมัติลงในไฟล์ `config.json`
 
 ---
 
-### 💾 Save Settings
+## ⌨️ คีย์ลัดพื้นฐาน (Hotkeys)
+*สามารถเปลี่ยนได้ในหน้าต่างตั้งค่า (F2)*
 
-โปรแกรมจะบันทึกค่าต่าง ๆ ลงไฟล์
-
-pool_config.json
-
-ข้อมูลที่บันทึก
-
-- ตำแหน่งหน้าต่าง
-- ขนาดหน้าต่าง
-- ตำแหน่งลูกบอล
-- ภาษา
-
----
-
-### 🌐 Language Support
-
-รองรับสองภาษา
-
-- 🇹🇭 ไทย
-- 🇺🇸 English
-
----
-
-# ⌨️ Hotkeys
-
-| Key | Function |
+| ปุ่มกด (Key) | หน้าที่ (Function) |
 |----|----|
-| **Insert** | ล็อค / ปลดล็อค |
-| **F5** | บันทึกค่า |
-| **F9** | เปลี่ยนภาษา |
-| **End** | ปิดโปรแกรม |
-
----
-
-# 🧠 ระบบการทำงานของโปรแกรม
-
-โปรแกรมสร้างขึ้นด้วย
-
-- Python
-- PyQt5
-
-โดยใช้ระบบ
-
-### 🎨 QPainter Rendering
-
-ใช้ `QPainter` ในการวาด
-
-- เส้น Guideline
-- หลุม
-- ลูกบอล
-- UI overlay
-
----
-
-### 📐 Angle Calculation
-
-คำนวณมุมด้วย
-
-```
-math.atan2()
-```
-
-เพื่อหาแนวเส้นจาก
-
-```
-Cue Ball → Pocket
-```
-
----
-
-### 📦 Configuration System
-
-การตั้งค่าจะถูกเก็บในไฟล์
-
-```
-pool_config.json
-```
-
-ตัวอย่าง
-
-```json
-{
-"x":100,
-"y":100,
-"w":1000,
-"h":500,
-"ball_x":200,
-"ball_y":200,
-"lang":"th"
-}
-```
-
----
-
-# 📂 Project Structure
-
-```
-8ball-pool-guideline
-
-│
-├── main.py
-├── pool_config.json
-│
-├── Images
-│   └── Image.png
-│
-└── README.md
-```
-
----
-
-# 🚀 Installation
-
-### 1️⃣ Install Python
-
-Download Python
-
-https://python.org
-
----
-
-### 2️⃣ Install Dependencies
-
-```
-pip install PyQt5 keyboard
-```
-
----
-
-### 3️⃣ Run Program
-
-```
-python main.py
-```
+| **Insert** | ล็อค / ปลดล็อคหน้าจอ (Lock / Unlock) |
+| **F2** | เปิด / ปิด หน้าต่างตั้งค่า (Settings UI) |
+| **F5** | บันทึกการตั้งค่า (Save Settings) |
+| **F9** | สลับภาษา ไทย/English (Toggle Language) |
+| **End** | ปิดโปรแกรม (Exit) |
 
 ---
 
@@ -207,131 +68,53 @@ python main.py
 
 ## 📌 About
 
-This program is a **Pool Aim Guideline Overlay Tool**.
-
-It draws aiming lines from the cue ball to every pocket on the table to help visualize shot angles.
-
-The window is **transparent** and stays **on top of the game**.
+This program is an advanced **Pool Aim Guideline Overlay Tool**. It draws aiming lines from the cue ball to every pocket on the table and calculates accurate reflection angles for bank shots. The application runs as a **transparent window** that stays on top of your game.
 
 ---
 
-# ✨ Features
+## ✨ Features
 
 ### 🎱 Pool Table Overlay
+Displays a customizable virtual pool table border directly on your screen.
 
-Displays a virtual pool table overlay.
+### 🎯 Auto Guideline & Reflection System
+- **Direct Shots:** Automatically draws lines from the cue ball to all 6 pockets.
+- **Bank Shots:** Moveable reflection point that calculates the exact vector bounce off the table cushions.
 
----
+### ⚙️ Real-time Settings UI (F2)
+A sleek, ImGui-inspired menu allows you to tweak:
+- **Visuals:** Cue ball radius, reflection point size, line thickness, and all UI colors.
+- **Opacity:** Adjust background transparency.
+- **Hotkeys:** Rebind any action to a new key.
 
-### 🎯 Auto Guideline System
+### 🖱️ Edit & 🔒 Lock Modes
+- **Edit Mode:** Freely drag the cue ball, reflection target, or resize the overlay.
+- **Lock Mode:** The overlay becomes **mouse-transparent**, allowing you to click and play the game underneath while the guidelines remain visible.
 
-Automatically draws lines from the cue ball to:
-
-- 4 corner pockets
-- 2 side pockets
-
-Total **6 pockets**
-
----
-
-### ⚙️ Edit Mode
-
-Allows user to
-
-- Move the cue ball
-- Resize the window
-- Move the overlay
+### 💾 Auto-Save
+All configurations, including your custom hotkeys and colors, are saved automatically to `config.json`.
 
 ---
 
-### 🔒 Lock Mode
-
-When locked:
-
-- Overlay becomes **mouse transparent**
-- You can interact with the game underneath
-
----
-
-### 💾 Auto Save Settings
-
-Settings are stored in
-
-```
-pool_config.json
-```
-
-Saved data:
-
-- Window position
-- Window size
-- Ball position
-- Language
-
----
-
-# ⌨️ Hotkeys
+## ⌨️ Default Hotkeys
+*Can be rebounded via the F2 Settings menu.*
 
 | Key | Function |
 |----|----|
-| **Insert** | Lock / Unlock |
-| **F5** | Save Settings |
-| **F9** | Change Language |
+| **Insert** | Lock / Unlock Overlay |
+| **F2** | Open Settings UI |
+| **F5** | Force Save Settings |
+| **F9** | Switch Language (TH/EN) |
 | **End** | Exit Program |
 
 ---
 
-# 🧠 How It Works
+# 🚀 การติดตั้งและใช้งาน (Installation & Usage)
 
-The application is built using
+### 1️⃣ Install Python
+Download and install Python 3.x from [python.org](https://python.org).
 
-- Python
-- PyQt5
-
-Main components:
-
-### 🎨 Rendering System
-
-Uses **QPainter** to draw
-
-- Aiming lines
-- Pockets
-- Ball indicator
-- UI overlay
-
----
-
-### 📐 Angle Calculation
-
-Angles are calculated using
-
-```
-math.atan2()
-```
-
-to determine shot directions.
-
----
-
-### 📦 Config System
-
-Settings are saved to
-
-```
-pool_config.json
-```
-
----
-
-# ⚠️ Disclaimer
-
-This tool is made for **learning and visualization purposes**.
-
-Use responsibly.
-
----
-
-# 👨‍💻 Developer
-
-
-Developed with Python & PyQt5
+### 2️⃣ Install Dependencies
+เปิด Command Prompt หรือ Terminal แล้วพิมพ์คำสั่ง:
+```bash
+pip install PyQt5 keyboard
